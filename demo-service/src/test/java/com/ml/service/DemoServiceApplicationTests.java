@@ -1,12 +1,12 @@
 package com.ml.service;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+//import org.junit.jupiter.api.Test;
+//import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class DemoServiceApplicationTests {
 
-    @Test
+//    @Test
     void contextLoads() {
     }
 

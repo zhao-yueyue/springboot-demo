@@ -1,12 +1,12 @@
 server:
   port: 8033
 
-#¹«¹²ÅäÖÃÓëprofilesÑ¡ÔñÎŞ¹Ø
+#å…¬å…±é…ç½®ä¸profilesé€‰æ‹©æ— å…³
 mybatis:
-#  typeAliasesPackage: com.×Ô¼ºÈ¡µÄ.model
+#  typeAliasesPackage: com.è‡ªå·±å–çš„.model
   mapperLocations: classpath:mybatis/*.xml
 
-#¿ª·¢ÅäÖÃ
+#å¼€å‘é…ç½®
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -14,6 +14,6 @@ spring:
     username: root
     password: Ebest@2017
 
-#log4j2ÅäÖÃ
+#log4j2é…ç½®
 logging:
   config: classpath:log4j2.xml
