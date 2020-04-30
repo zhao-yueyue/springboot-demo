@@ -32,10 +32,11 @@ public class LoginController {
     @ResponseBody
     public JSONObject login(HttpServletRequest request, String loginAccount){
         JSONObject jsonObject = new JSONObject();
-        logger.info("doLogin -> 登录");
+        logger.info("doLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogindoLogin -> 登录{}",loginAccount);
         if(null!=loginAccount){
             SysUser user = sysUserService.findSysUserByName(loginAccount);
             if(user!=null){
+                logger.error("doLogin -> msg{}","登录成功");
                 jsonObject.put("status","0");
                 jsonObject.put("msg","登录成功！");
                 jsonObject.put("SysUser",user.toString());

@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
 <!--
-    自定义命名格式：
-    %d：发生时间，%d{yyyy-MM-dd HH:mm:ss,SSS}，输出类似：2020-02-20 22:10:28,921
-    %F：输出所在的类文件名
-    %t：线程名称
-    %p：日志级别
-    %c：日志消息所在类名
-    %m：消息内容
-    %M：输出所在函数名
-    %x: 输出和当前线程相关联的NDC(嵌套诊断环境),尤其用到像java servlets这样的多客户多线程的应用中。
-    %l：执行的函数名(类名称:行号）com.core.LogHelper.aroundService(LogHelper.java:32)
-    %n：换行
+    自定义日志输出格式：
+    %d{yyyy-MM-dd HH:mm:ss, SSS} : 输出:2020-02-20 22:10:28,921;日志生产时间,输出到毫秒的时间
+    %-5level : 输出日志级别，-5表示左对齐并且固定输出5个字符，如果不足在右边补0
+    %c : logger的名称(%logger)
+    %t : 输出当前线程名称
+    %p : 日志输出格式
+    %m : 日志内容，即 logger.info("message")
+    %n : 换行符
+    %C : 日志消息所在类名(%F：输出所在的类文件名)
+    %L : 行号
+    %M : 输出所在函数名
     %i：从1开始自增数字
-    %-5level：输出日志级别，-5表示左对齐并且固定输出5个字符，如果不足在右边补0
+    %l : 输出语句所在的行数, 包括类名、方法名、文件名、行数[com.core.LogHelper.aroundService(LogHelper.java:32)]
+    %x: 输出和当前线程相关联的NDC(嵌套诊断环境),尤其用到像java servlets这样的多客户多线程的应用中。
     “${sys:user.home}”是HOME目录 如:C:\Users\heave, 此处指定任意目录如：D:\logs
+    hostName : 本地机器名
+    hostAddress : 本地ip地址
 -->
 <!--设置log4j2自身log级别为warn，每间隔30秒数自动检测配置是否发生修改，并重新配置-->
-<configuration status="INFO" monitorInterval="30">
+<configuration status="ERROR" monitorInterval="30">
     <Properties>
         <!-- 日志显示模板,显示内容的格式如下 -->
-        <!-- [21:55:33:047] [INFO] - org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173) - Initializing Spring embedded WebApplicationContext -->
-        <Property name="log_pattern" value="[%d{yyyy-MM-dd HH:mm:ss}] %p - %l - %m%n"/>
+        <Property name="LOG_PATTERN" value="[%-4level] [%d{yyyy-MM-dd HH:mm:ss.SSS}] [%logger{36}] [%msg]%n"/>
         <!-- 保存日志文件目录 -->
         <!--<Property name="file_path" value="${sys:user.home}/logs"/>-->
-        <Property name="file_path" value="F:/workspace/springboot/logs"/>
+        <Property name="LOG_HOME" value="F:/workspace/springboot/logs"/>
+        <!-- 日志备份路径 -->
+        <Property name="BACKUP_HOME" value="F:/workspace/springboot/logs/backup"/>
         <!-- 日志文件的最大容量，超过该值就进行备份 -->
-        <Property name="file_max_size" value="50MB"/>
-        <!-- 备份的文件夹名称 如下为：2020-02 -->
-        <Property name="backup_folder" value="${date:yyyy-MM}"/>
-        <!-- 备份文件的后缀，日志文件超过file_max_size会备份到filePattern指定的目录下 -->
-        <Property name="backup_file_suffix" value="-%d{yyyy-MM-dd}-%i.log"/>
+        <Property name="FILE_MAX_SIZE" value="1KB"/>
+        <!-- 备份的文件夹名称 如下为：xxxx-xx-xx -->
+        <Property name="BACKUP_FOLDER" value="$${date:yyyy-MM-dd}"/>
+        <!-- 备份文件的后缀，日志文件超过file_max_size会以该后缀为格式备份到filePattern指定的目录下 -->
+        <Property name="BACKUP_FILE_SUFFIX" value="_%d{yyyy-MM-dd_HH-mm}_%i.zip"/>
     </Properties>
 
     <!--定义appender-->
@@ -42,70 +45,118 @@
             <!-- 设置控制台只输出INFO及以上级别的信息(onMatch),其他的直接拒绝(onMismatch) -->
             <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
             <!--输出日志的格式-->
-            <PatternLayout pattern="${log_pattern}"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
         </console>
 
-        <!-- 所有的日志信息会打印到此文件中，append=false每次启动程序会自动清空 -->
-        <!-- <File name="all" fileName="${file_path}/all.log" append="true">
-            <PatternLayout pattern="${log_pattern}"/>
+        <!--File:同步输出所有日志信息到本地文件-->
+        <!--append="false" :根据其下日志策略,每次清空文件重新输入日志,可用于测试-->
+        <!--<File name="all" fileName="${LOG_HOME}/test.log" append="false">
+            <PatternLayout pattern="${LOG_PATTERN}" />
         </File>-->
 
-        <!--
-        该RollingFile存储INFO级别的日志，
-        默认存储到 fileName 文件中
-        超过SizeBasedTriggeringPolicy的设定值，则存储到 filePattern 文件中
-        -->
-        <RollingFile name="RollingFileInfo" fileName="${file_path}/info.log"
-                     filePattern="${file_path}/${backup_folder}/info${backup_file_suffix}">
-            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
-            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
-            <!-- 写入日志文件的模板 -->
-            <PatternLayout pattern="${log_pattern}"/>
+        <!--SMTP :邮件发送日志-->
+        <!--<SMTP name="Mail" subject="****SaaS系统正式版异常信息" to="message@message.info" from="message@lengjing.info" smtpUsername="message@message.info" smtpPassword="LENG****1234" smtpHost="mail.lengjing.info" smtpDebug="false" smtpPort="25" bufferSize="10">
+            <PatternLayout pattern="[%-5p]:%d{YYYY-MM-dd HH:mm:ss} [%t] %c{1}:%L - %msg%n" />
+        </SMTP>-->
+
+        <!-- [name]为该节点命名
+            [fileName]指定当前正在打印的日志文件名称和文件存放的相对路径
+            [filePattern]指定了备份后的日志文件名称和存放路径(其中%i表示备份文件名按照正整数开始递增) -->
+        <RollingFile name="RollingFileInfo" fileName="${LOG_HOME}/info.log" filePattern="${BACKUP_HOME}/${BACKUP_FOLDER}/info${BACKUP_FILE_SUFFIX}">
+            <!-- ThresholdFilter:日志输出过滤 -->
+            <!-- level="info":日志级别;onMatch="ACCEPT":级别在info之上则接受;onMismatch="DENY":级别在info之下则拒绝 -->
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!-- [PatternLayout]节点[pattern]输出格式 -->
+            <PatternLayout pattern="${LOG_PATTERN}" />
+            <!-- Policies :日志滚动策略 -->
             <Policies>
-                <!-- 每24小时更新一次 -->
-<!--                <TimeBasedTriggeringPolicy modulate="true" interval="24" />-->
-                <SizeBasedTriggeringPolicy size="${file_max_size}"/>
+                <!-- [TimeBasedTriggeringPolicy]指定按时间生成备份文件的策略
+                    (时间生成时，根据[filePattern]的命名规则，时间粒度最小的是mm，则按分钟备份;最小粒度最小是hh，则按小时备份)
+                    [modulate]若为true,则日志时间将以0点为边界进行偏移计算
+                    [interval]设置是1,则按1分钟或1小时备份一次,如果interval改为12,则按12分钟或12小时备份一次 -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <!-- [SizeBasedTriggeringPolicy]指定按文件大小生成备份文件的策略
+                    (当日志文件达到size大小时生成备份文件，大小以字节为单位指定，后缀为KB、MB或GB，例如1GB；如果不填，默认值为10MB。) -->
+                <SizeBasedTriggeringPolicy size="50KB"/>
             </Policies>
-            <!-- DefaultRolloverStrategy 属性如不设置，则默认为最多同一文件夹下7个文件，超过该数量，会滚动删除前面的记录 -->
-            <DefaultRolloverStrategy max="20"/>
+
+            <!-- [DefaultRolloverStrategy]用来指定同一个文件夹下最多有几个日志文件时开始删除最旧的，创建新的(通过max属性)
+                [max]指定最多保存3个备份文件 -->
+            <DefaultRolloverStrategy max="50">
+                <!-- [Delete]删除满足条件的文件 -->
+                <!-- [basePath]指定需要删除的日志目录;[maxDepth]代表扫描的目录深度(maxDepth="1"表示当前目录) -->
+                <Delete basePath="${BACKUP_HOME}" maxDepth="2">
+                    <!-- 指定需要删除的文件名称 -->
+                    <IfFileName glob="*/info_*.zip" />
+                    <!-- 指定文件过期时间[age的单位：D[天]、H[时]、M[分]、S[秒]] -->
+                    <IfLastModified age="30D" />
+                </Delete>
+            </DefaultRolloverStrategy>
         </RollingFile>
 
-        <RollingFile name="RollingFileWarn" fileName="${file_path}/warn.log"
-                     filePattern="${file_path}/${backup_folder}/warn${backup_file_suffix}">
-            <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout pattern="${log_pattern}"/>
+        <!-- [name]为该节点命名
+        [fileName]指定当前正在打印的日志文件名称和文件存放的相对路径
+        [filePattern]指定了备份后的日志文件名称和存放路径(其中%i表示备份文件名按照正整数开始递增) -->
+        <!--<RollingFile name="RollingFileError" fileName="${LOG_HOME}/error.log" filePattern="${BACKUP_HOME}/${BACKUP_FOLDER}/error${BACKUP_FILE_SUFFIX}">
+            &lt;!&ndash; ThresholdFilter:日志输出过滤 &ndash;&gt;
+            &lt;!&ndash; level="info":日志级别;onMatch="ACCEPT":级别在info之上则接受;onMismatch="DENY":级别在info之下则拒绝 &ndash;&gt;
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            &lt;!&ndash; [PatternLayout]节点[pattern]输出格式 &ndash;&gt;
+            <PatternLayout pattern="${LOG_PATTERN}" />
             <Policies>
-                <TimeBasedTriggeringPolicy modulate="true" interval="24" />
-<!--                <SizeBasedTriggeringPolicy size="${file_max_size}"/>-->
+                &lt;!&ndash; [TimeBasedTriggeringPolicy]指定按时间生成备份文件的策略
+                    (时间生成时，根据[filePattern]的命名规则，时间粒度最小的是mm，则按分钟备份;最小粒度最小是hh，则按小时备份)
+                    [interval]设置是1,则按1分钟或1小时备份一次,如果interval改为12,则按12分钟或12小时备份一次 &ndash;&gt;
+                <TimeBasedTriggeringPolicy interval="1" />
+                &lt;!&ndash; [SizeBasedTriggeringPolicy]指定按文件大小生成备份文件的策略
+                    (当日志文件达到size大小时生成备份文件，大小以字节为单位指定，后缀为KB、MB或GB，例如1GB；如果不填，默认值为10MB。) &ndash;&gt;
+                <SizeBasedTriggeringPolicy size="50MB" />
             </Policies>
-        </RollingFile>
 
-        <RollingFile name="RollingFileError" fileName="${file_path}/error.log"
-                     filePattern="${file_path}/${backup_folder}/error${backup_file_suffix}">
-            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout pattern="${log_pattern}"/>
-            <Policies>
-                <TimeBasedTriggeringPolicy modulate="true" interval="24" />
-<!--                <SizeBasedTriggeringPolicy size="${file_max_size}"/>-->
-            </Policies>
-        </RollingFile>
-
+            &lt;!&ndash; [DefaultRolloverStrategy]用来指定同一个文件夹下最多有几个日志文件时开始删除最旧的，创建新的(通过max属性)
+                [max]指定最多保存3个备份文件 &ndash;&gt;
+            <DefaultRolloverStrategy max="50">
+                &lt;!&ndash; [Delete]删除满足条件的文件 &ndash;&gt;
+                &lt;!&ndash; [basePath]指定需要删除的日志目录;[maxDepth]代表扫描的目录深度(maxDepth="1"表示当前目录) &ndash;&gt;
+                <Delete basePath="${BACKUP_HOME}" maxDepth="2">
+                    &lt;!&ndash; 指定需要删除的文件名称 &ndash;&gt;
+                    <IfFileName glob="*/error_*.zip" />
+                    &lt;!&ndash; 指定文件过期时间[age的单位：D[天]、H[时]、M[分]、S[秒]] &ndash;&gt;
+                    <IfLastModified age="30D" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>-->
     </appenders>
 
     <!-- 只有定义了logger并使用appender-ref，appender才会生效 -->
+    <!-- level:日志输出级别，共有8个级别，按照从低到高为：All < Trace < Debug < Info < Warn < Error < Fatal < OFF -->
     <loggers>
-        <!--过滤掉spring和hibernate的一些无用的debug信息-->
-        <logger name="org.springframework" level="INFO"/>
-        <logger name="org.mybatis" level="INFO">
-            <!-- 添加如下设置，控制台会再打印一次 -->
+        <!--过滤掉spring和mybatis的一些无用的debug信息-->
+        <logger name="org.springframework" level="INFO" additivity="false">
+            <!-- 用来指定该日志输出到哪个Appender,如果没有指定，就会默认继承自Root.
+                如果指定了，那么会在指定的这个Appender和Root的Appender中都会输出,
+                此时我们可以设置Logger的additivity="false"只在自定义的Appender中进行输出。 -->
             <AppenderRef ref="Console"/>
         </logger>
+        <logger name="org.mybatis" level="INFO" additivity="false">
+            <!-- 用来指定该日志输出到哪个Appender,如果没有指定，就会默认继承自Root.
+                如果指定了，那么会在指定的这个Appender和Root的Appender中都会输出,
+                此时我们可以设置Logger的additivity="false"只在自定义的Appender中进行输出。 -->
+            <AppenderRef ref="Console"/>
+        </logger>
+        <!-- Root节点用来指定项目的根日志，如果没有单独指定Logger，那么就会默认使用该Root日志输出 -->
         <root level="INFO">
             <appender-ref ref="Console"/>
             <appender-ref ref="RollingFileInfo"/>
-            <appender-ref ref="RollingFileWarn"/>
-            <appender-ref ref="RollingFileError"/>
+<!--            <appender-ref ref="RollingFileError"/>-->
         </root>
+        <!--AsyncLogger :异步日志,LOG4J有三种日志模式,全异步日志,混合模式,同步日志,性能从高到底,线程越多效率越高,也可以避免日志卡死线程情况发生-->
+        <!--additivity="false":additivity设置事件是否在root logger输出，为了避免重复输出，可以在Logger 标签下设置additivity为”false”-->
+        <!--<AsyncLogger name="AsyncLogger" level="trace" includeLocation="true" additivity="false">
+            <appender-ref ref="RollingFileError"/>
+        </AsyncLogger>-->
     </loggers>
+
+
 
 </configuration>
