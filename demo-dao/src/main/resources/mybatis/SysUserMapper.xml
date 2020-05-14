@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ml.mapper.SysUserMapper" >
-    <resultMap id="BaseResultMap" type="com.ml.entity.SysUser" >
+    <resultMap id="BaseResultMap" type="com.ml.po.SysUser" >
         <id column="ID" property="id" jdbcType="INTEGER" />
         <result column="NAME" property="name" jdbcType="VARCHAR" />
         <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
@@ -20,7 +20,7 @@
             and password = #{password}
         </if>
     </sql>
-    <insert id="addSysUser" parameterType="com.ml.entity.SysUser">
+    <insert id="addSysUser" parameterType="com.ml.po.SysUser">
         insert into sys_user
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="id != null" >

@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableTransactionManagement
 @MapperScan("com.ml.mapper")
-@ComponentScan(basePackages = {"com.ml.service","com.ml.mapper","com.ml.web.controller"})
+@ComponentScan(basePackages = {"com.ml.web","com.ml.service","com.ml.common"})
 public class DemoWebApplication /*extends SpringBootServletInitializer*/ {
 
     /**

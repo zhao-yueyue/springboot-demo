@@ -1,0 +1,26 @@
+server:
+  port: 8001 # 服务绑定的端口，不写默认是8080
+
+#开发配置
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://180.76.176.197:3306/developmentenvironment?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useSSL=false
+    username: root
+    password: Ebest@2017
+#  redis: # redis配置
+#    host: localhost
+#    password: 123456
+#    port: 8397
+#    jedis:
+#      pool:
+#        max-active: 8
+#        max-idle: 8
+#        min-idle: 0
+#  jackson: # 关于jackson的配置
+#    default-property-inclusion: non_null
+#  serialization:
+#    write_dates_as_timestamps: true
+#  cache:
+#    redis:
+#      time-to-live: 86400s

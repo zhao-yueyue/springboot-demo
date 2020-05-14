@@ -22,13 +22,15 @@
     <!-- 声明子工程 -->
     <modules>
 <!--        <module>demo-base</module>-->
-        <module>demo-dao</module>
-        <module>demo-service</module>
         <module>demo-web</module>
+        <module>demo-service</module>
+        <module>demo-dao</module>
+        <module>demo-common</module>
     </modules>
 
     <properties>
         <java.version>1.8</java.version>
+        <module.version>0.0.1-SNAPSHOT</module.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
@@ -39,17 +41,22 @@
             <dependency>
                 <groupId>com.ml</groupId>
                 <artifactId>demoWeb</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${module.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.ml</groupId>
                 <artifactId>demoDao</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${module.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.ml</groupId>
                 <artifactId>demoService</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ml</groupId>
+                <artifactId>demoCommon</artifactId>
+                <version>${module.version}</version>
             </dependency>
 
             <dependency>
@@ -72,17 +79,48 @@
                 <artifactId>fastjson</artifactId>
                 <version>1.2.45</version>
             </dependency>
+
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>2.0.1.Final</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <!-- 多环境配置 -->
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <!-- 环境标识，需要与配置文件的名称相对应 -->
+                <package.environment>dev</package.environment>
+            </properties>
+            <!-- 是否默认 true表示默认-->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>prd</id>
+            <properties>
+                <package.environment>prd</package.environment>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
+                    <!--<include>application.yml</include>
+                    <include>application-${package.environment}.yml</include>
+                    <include>banner.txt</include>
+                    <include>**/*.xml</include>-->
                     <include>**/*.*</include>
                 </includes>
-                <filtering>false</filtering>
+                <filtering>true</filtering>
             </resource>
         </resources>
     </build>

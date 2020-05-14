@@ -1,6 +1,6 @@
 package com.ml.mapper;
 
-import com.ml.entity.SysUser;
+import com.ml.po.SysUser;
 import org.springframework.data.repository.query.Param;
 
 public interface SysUserMapper {
