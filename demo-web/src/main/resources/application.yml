@@ -1,5 +1,5 @@
 # mvn clean install -Dmaven.test.skip
-# mvn  clean install -P .yml文件-后面的名字
+# mvn clean install -P .yml文件-后面的名字
 server:
   servlet:
     context-path: /demo # 服务的路径，不写默认为空
