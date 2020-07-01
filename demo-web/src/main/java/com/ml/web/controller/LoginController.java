@@ -37,7 +37,7 @@ public class LoginController {
         SysUser user = sysUserService.findSysUserByName(userVO);
 //        user.getCreateDate();
         if(Objects.isNull(user)){
-            throw new RuntimeException("异常信息");
+            throw new RuntimeException("异常信息!");
         }
         return user;
     }
