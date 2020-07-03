@@ -1,0 +1,24 @@
+*.class
+.DS_Store
+*/.DS_Store
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+#Idea Files#
+*.iml
+*.ipr
+*.iws
+.idea/
+
+
+#Maven Files#
+*/target/
+target/
+pom.xml.*
+*/pom.xml.*
+release.properties
+/.apt_generated/
+!maven-wrapper.jar
