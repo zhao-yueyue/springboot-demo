@@ -1,23 +1,23 @@
 # mvn clean install -Dmaven.test.skip
 # mvn clean install -P .yml文件-后面的名字
 server:
-  servlet:
-    context-path: /demo # 服务的路径，不写默认为空
+ servlet:
+  context-path: /demo # 服务的路径，不写默认为空
 
 #公共配置与profiles选择无关
 mybatis:
-  #读取mybatis的mapper.xml配置
-  mapperLocations: classpath:mybatis/*.xml
+ #读取mybatis的mapper.xml配置
+ mapperLocations: classpath:mybatis/*.xml
 
 #log4j2配置
 logging:
-  config: classpath:log4j2.xml
-  level:
-    cn.jay.repository: trace
+ config: classpath:log4j2.xml
+ level:
+  cn.jay.repository: trace
 
 #开发配置
 spring:
-  application:
-    name: springboot #服务名
-  profiles:
-    active: @package.environment@ #配置文件的版本
+ application:
+  name: springboot #服务名
+ profiles:
+  active: @package.environment@ #配置文件的版本

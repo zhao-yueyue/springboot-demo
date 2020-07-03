@@ -3,15 +3,14 @@ package com.ml.web;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@SpringBootApplication
+@SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
 @EnableTransactionManagement
 @MapperScan("com.ml.mapper")
-@ComponentScan(basePackages = {"com.ml.web","com.ml.service","com.ml.common"})
+@ComponentScan(basePackages = {"com.ml.web","com.ml.service","com.ml.common","com.ml.datasource"})
 public class DemoWebApplication /*extends SpringBootServletInitializer*/ {
 
     /**

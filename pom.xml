@@ -21,7 +21,6 @@
 
     <!-- 声明子工程 -->
     <modules>
-<!--        <module>demo-base</module>-->
         <module>demo-web</module>
         <module>demo-service</module>
         <module>demo-dao</module>
@@ -34,6 +33,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <starter.web.version>2.3.1.RELEASE</starter.web.version>
+        <lombok.version>1.16.22</lombok.version>
+        <fastjson.JSON.version>1.2.45</fastjson.JSON.version>
+        <validation.version>2.0.1.Final</validation.version>
+        <mybatis.starter.version>1.3.2</mybatis.starter.version>
+        <commons.net.version>3.6</commons.net.version>
+        <jsch.version>0.1.54</jsch.version>
     </properties>
 
     <dependencyManagement>
@@ -43,16 +49,19 @@
                 <artifactId>demoWeb</artifactId>
                 <version>${module.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.ml</groupId>
                 <artifactId>demoDao</artifactId>
                 <version>${module.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.ml</groupId>
                 <artifactId>demoService</artifactId>
                 <version>${module.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.ml</groupId>
                 <artifactId>demoCommon</artifactId>
@@ -62,28 +71,48 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
-                <version>2.3.1.RELEASE</version>
+                <version>${starter.web.version}</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.16.22</version>
-                <scope>provided</scope>
+                <version>${lombok.version}</version>
             </dependency>
 
-            <!-- 格式化对象，方便输出日志 -->
+            <!-- json格式化对象[JSON] -->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
-                <version>1.2.45</version>
+                <version>${fastjson.JSON.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>javax.validation</groupId>
                 <artifactId>validation-api</artifactId>
-                <version>2.0.1.Final</version>
+                <version>${validation.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.starter.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
+            <!-- 不支持通过协议SSH2进行SFTP连接 -->
+            <dependency>
+                <groupId>commons-net</groupId>
+                <artifactId>commons-net</artifactId>
+                <version>${commons.net.version}</version>
+            </dependency>
+
+            <!-- 支持通过协议SSH2进行SFTP连接 -->
+            <dependency>
+                <groupId>com.jcraft</groupId>
+                <artifactId>jsch</artifactId>
+                <version>${jsch.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

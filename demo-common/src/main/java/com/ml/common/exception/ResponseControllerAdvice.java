@@ -1,4 +1,4 @@
-package com.ml.common;
+package com.ml.common.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

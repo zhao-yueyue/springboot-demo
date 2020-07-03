@@ -1,15 +1,13 @@
 package com.ml.web.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.ml.po.SysUser;
 import com.ml.service.SysUserService;
 import com.ml.vo.SysUserVO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Objects;
@@ -20,7 +18,7 @@ public class LoginController {
 
     private final Logger logger = LogManager.getLogger(LoginController.class);
 
-    @Autowired
+    @Resource
     private SysUserService sysUserService;
 
     @RequestMapping("/toLogin")
@@ -29,27 +27,59 @@ public class LoginController {
     }
 
     @PostMapping("/doLogin")
-    public SysUser login(HttpServletRequest request, @RequestBody @Valid SysUserVO userVO){
-        JSONObject jsonObject = new JSONObject();
+    public SysUser login(@RequestBody @Valid SysUserVO userVO){
         logger.info("doLogin -> 登录{}",userVO.toString());
         logger.error("doLogin -> 用户名{}",userVO.getName());
         logger.warn("doLogin -> 登录名{}",userVO.getLoginAccount());
-        SysUser user = sysUserService.findSysUserByName(userVO);
+        SysUser user = sysUserService.findMasterSysUserByName(userVO);
 //        user.getCreateDate();
         if(Objects.isNull(user)){
             throw new RuntimeException("异常信息!");
         }
         return user;
     }
+
+    @GetMapping("/rabbit")
+    public String sendRabbit() {
+        sysUserService.sendRabbit();
+        return "ok";
+    }
+
+    @GetMapping("/all1")
+    public SysUser all1() {
+        SysUserVO sysUserVO = new SysUserVO();
+        sysUserVO.setLoginAccount("tiaojie");
+        return sysUserService.findMasterSysUserByName(sysUserVO);
+    }
+
+    @GetMapping("/all2")
+    public SysUser all2() {
+        SysUserVO sysUserVO = new SysUserVO();
+        sysUserVO.setLoginAccount("admin");
+        return sysUserService.findSecondSysUserByName(sysUserVO);
+    }
+
+    @GetMapping("/add1")
+    public int add1() {
+        SysUser sysUser = new SysUser();
+        sysUser.setLoginAccount("add1");
+        return sysUserService.addMasterSysUser(sysUser);
+    }
+
+    @GetMapping("/add2")
+    public int add2() {
+        SysUser sysUser = new SysUser();
+        sysUser.setLoginAccount("add2");
+        return sysUserService.addSecondSysUser(sysUser);
+    }
+
     /**
      * 退出系统
      * @param session
      *   Session
-     * @return
-     * @throws Exception
      */
     @RequestMapping(value="/logout")
-    public String logout(HttpSession session) throws Exception{
+    public String logout(HttpSession session) {
         //清除Session
         session.invalidate();
         return "login";

@@ -1,4 +1,4 @@
-package com.ml.common;
+package com.ml.common.exception;
 
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

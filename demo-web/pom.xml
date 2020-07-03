@@ -23,12 +23,6 @@
             <artifactId>demoService</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-        <!-- web 添加 common 的依赖 -->
-        <dependency>
-            <groupId>com.ml</groupId>
-            <artifactId>demoCommon</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -59,7 +53,8 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
-        <dependency>
+
+        <!--<dependency>
             <groupId>com.lmax</groupId>
             <artifactId>disruptor</artifactId>
             <version>3.4.2</version>
@@ -69,7 +64,7 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
 
-        <!-- 格式化对象，方便输出日志 -->
+        &lt;!&ndash; 格式化对象，方便输出日志 &ndash;&gt;
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
@@ -90,8 +85,8 @@
                     <artifactId>javassist</artifactId>
                     <groupId>org.javassist</groupId>
                 </exclusion>
-            </exclusions><!-- 4.1.3 包存在UI资源缺失问题 -->
-        </dependency>
+            </exclusions>&lt;!&ndash; 4.1.3 包存在UI资源缺失问题 &ndash;&gt;
+        </dependency>-->
     </dependencies>
 
     <build>
