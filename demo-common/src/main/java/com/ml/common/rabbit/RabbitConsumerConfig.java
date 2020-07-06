@@ -4,9 +4,10 @@ import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.Resource;
 
 /**
  * 消费者配置
@@ -14,9 +15,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitConsumerConfig {
 
-    @Autowired
+    @Resource
     private CachingConnectionFactory connectionFactory;
-    @Autowired
+    @Resource
     private RabbitAckMonitorConfig rabbitAckMonitorConfig;//消息接收处理类
 
     @Bean

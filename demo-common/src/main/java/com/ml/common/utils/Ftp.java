@@ -47,7 +47,7 @@ public class Ftp {
         logger.info("连接ftp成功!" + sshSession);
     }
 
-    *//**
+    *//*
      * 是否已连接
      *
      * @return
@@ -56,7 +56,7 @@ public class Ftp {
         return null != channel && channel.isConnected();
     }
 
-    *//**
+    *//*
      * 获取本地线程存储的sftp客户端
      *
      * @return
@@ -72,7 +72,7 @@ public class Ftp {
         return sftpLocal.get();
     }
 
-    *//**
+    *//*
      * 释放本地线程存储的sftp客户端
      *//*
     public static void release() {
@@ -84,7 +84,7 @@ public class Ftp {
         }
     }
 
-    *//**
+    *//*
      * 关闭通道
      *
      * @throws Exception
@@ -106,7 +106,7 @@ public class Ftp {
         }
     }
 
-    *//**
+    *//*
      * @param directory  上传ftp的目录
      * @param uploadFile 本地文件目录
      *

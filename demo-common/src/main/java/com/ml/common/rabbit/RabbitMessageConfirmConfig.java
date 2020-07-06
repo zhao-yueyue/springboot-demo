@@ -27,11 +27,9 @@ public class RabbitMessageConfirmConfig {
              * */
             @Override
             public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-                if(!ack){
-                    System.out.println("ConfirmCallback:     "+"确认情况："+ack);
-                    System.out.println("ConfirmCallback:     "+"相关数据："+correlationData);
-                    System.out.println("ConfirmCallback:     "+"原因："+cause);
-                }
+                System.out.println("ConfirmCallback:     "+"确认情况："+ack);
+                System.out.println("ConfirmCallback:     "+"相关数据："+correlationData);
+                System.out.println("ConfirmCallback:     "+"原因："+cause);
             }
         });
 

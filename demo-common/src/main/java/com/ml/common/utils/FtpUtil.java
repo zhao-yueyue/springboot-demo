@@ -15,7 +15,6 @@ public class FtpUtil {
 
     /**
      * 创建目录
-     *
      * @param ftpConfig  配置
      * @param remotePath 需要创建目录的目录
      * @param makePath   需要创建的目录
@@ -112,8 +111,10 @@ public class FtpUtil {
                 throw new RuntimeException("切换目录失败");
             }
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-            File file = new File(localPath, localName);
-            if (!file.getParentFile().exists()) {
+            String path = localPath+localName;
+            File file = new File(path);
+            File parentFile = file.getParentFile();
+            if (!parentFile.exists()) {
                 boolean mkdirsResult = file.getParentFile().mkdirs();
                 if (!mkdirsResult) {
                     throw new RuntimeException("创建目录失败");
@@ -183,7 +184,6 @@ public class FtpUtil {
      *
      * @param ftpConfig 配置
      * @return 是否登录成功
-     * @throws IOException
      */
     private static FTPClient connectClient(FtpConfig ftpConfig) throws IOException {
         FTPClient ftpClient = getClient();
@@ -249,7 +249,7 @@ public class FtpUtil {
     }
 
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws FileNotFoundException {
         //连接配置
         FtpUtil.FtpConfig ftpConfig = new FtpUtil.FtpConfig().setUserName("root").setPassword("JY^Court)1025%").setIp("180.76.176.197").setPort(22);
         //创建目录
@@ -260,21 +260,35 @@ public class FtpUtil {
 //        InputStream inputStream = new FileInputStream("G:\\a.txt");
 //        FtpUtil.upload(ftpConfig, "/test", inputStream, "zhan.txt");
 
-        /**下载文件
+        /*下载文件
          * 配置
          * 远程目录
          * 文件名
          * 本地目录
          * 本地文件名
          */
-        FtpUtil.download(ftpConfig, "/home/testuser/test/ceshi2", "38357_mediate_1591695318973.xml", "C:/Users/Downloads/log", "38357_mediate_1591695318973.xml");
-
+        boolean downloadFlag = FtpUtil.download(ftpConfig, "/home/testuser/test/ceshi2", "38357_mediate_1591695318973.xml", "C:/Users/Downloads/log", "38357_mediate_1591695318973.xml");
+        System.out.println(downloadFlag);
         //移动文件
 //        FtpUtil.moveFile(ftpConfig, "/test", "zhan.txt", "/test2", "zhan1.txt");
 
         //删除文件
 //        FtpUtil.deleteFile(ftpConfig, "/test", "zhan.txt");
 //        FtpUtil.deleteFile(ftpConfig, "/test2", "zhan1.txt");
+
+        boolean makeFlag = makeDirectory(ftpConfig,null,null);
+        System.out.println(makeFlag);
+        String fromName = "asdasdas";
+        String fromPath = "qeqeq";
+        String toPath = "qeqeq";
+        String toName = "qeqeq";
+        boolean moveFlag = moveFile(ftpConfig, fromPath, fromName, toPath, toName);
+        System.out.println(moveFlag);
+        boolean deleteFlag = deleteFile(ftpConfig, null, null);
+        System.out.println(deleteFlag);
+        InputStream in = new BufferedInputStream(new FileInputStream("file"));
+        boolean uploadFlag = upload(ftpConfig, null, in, null);
+        System.out.println(uploadFlag);
     }
 }
 

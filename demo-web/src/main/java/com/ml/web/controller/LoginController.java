@@ -1,10 +1,11 @@
 package com.ml.web.controller;
 
 import com.ml.po.SysUser;
+import com.ml.service.AsyncService;
 import com.ml.service.SysUserService;
 import com.ml.vo.SysUserVO;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -16,10 +17,20 @@ import java.util.Objects;
 @RequestMapping("login")
 public class LoginController {
 
-    private final Logger logger = LogManager.getLogger(LoginController.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Resource
     private SysUserService sysUserService;
+    @Resource
+    private AsyncService asyncService;
+
+    @GetMapping("/async")
+    public String asyncThread() {
+        for (int i = 0; i < 100; i++) {
+            asyncService.executeAsync(i);
+        }
+        return "ok";
+    }
 
     @RequestMapping("/toLogin")
     public String toLogin(){
@@ -48,14 +59,14 @@ public class LoginController {
     @GetMapping("/all1")
     public SysUser all1() {
         SysUserVO sysUserVO = new SysUserVO();
-        sysUserVO.setLoginAccount("tiaojie");
+        sysUserVO.setLoginAccount("test");
         return sysUserService.findMasterSysUserByName(sysUserVO);
     }
 
     @GetMapping("/all2")
     public SysUser all2() {
         SysUserVO sysUserVO = new SysUserVO();
-        sysUserVO.setLoginAccount("admin");
+        sysUserVO.setLoginAccount("test");
         return sysUserService.findSecondSysUserByName(sysUserVO);
     }
 

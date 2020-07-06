@@ -9,7 +9,7 @@ public class JedisUtil {
     /*@Autowired
     private JedisPool jedisPool;
 
-    *//**
+    *//*
      * 获得连接
      *
      * @return
@@ -18,7 +18,7 @@ public class JedisUtil {
         return jedisPool.getResource();
     }
 
-    *//**
+    *//*
      * 设值
      * @param key
      * @param value
@@ -37,7 +37,7 @@ public class JedisUtil {
         }
     }
 
-    *//**
+    *//*
      * 设值，含过期时间
      * @param key
      * @param value
@@ -57,7 +57,7 @@ public class JedisUtil {
         }
     }
 
-    *//**
+    *//*
      * 根据key取值
      * @param key
      * @return
@@ -75,7 +75,7 @@ public class JedisUtil {
         }
     }
 
-    *//**
+    *//*
      * 删除key
      *
      * @param key
@@ -94,7 +94,7 @@ public class JedisUtil {
         }
     }
 
-    *//**
+    *//*
      * 判断key是否存在
      *
      * @param key
@@ -113,7 +113,7 @@ public class JedisUtil {
         }
     }
 
-    *//**
+    *//*
      * 设值key过期时间
      *
      * @param key
@@ -133,7 +133,7 @@ public class JedisUtil {
         }
     }
 
-    *//**
+    *//*
      * 获取剩余时间
      *
      * @param key
@@ -152,7 +152,7 @@ public class JedisUtil {
         }
     }
 
-    *//**
+    *//*
      * 关闭jedis连接
      *
      * @param jedis
