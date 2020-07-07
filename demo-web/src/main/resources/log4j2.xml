@@ -23,7 +23,7 @@
 <configuration status="INFO" monitorInterval="30">
     <Properties>
         <!-- 日志显示模板,显示内容的格式如下 -->
-        <Property name="LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-4level] [%logger{36}] [%msg]%n"/>
+        <Property name="LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-4level] [%t] [%logger{36}] [%msg]%n"/>
 <!--        <Property name="LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%highlight{%p}] [%style{%C}{bright,yellow}] [%style{%msg}{bright,blue}]%n%style{%throwable}{red}"/>-->
         <!-- 保存日志文件目录 -->
         <!--<Property name="file_path" value="${sys:user.home}/logs"/>-->

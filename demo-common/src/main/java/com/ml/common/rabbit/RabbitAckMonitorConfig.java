@@ -34,8 +34,8 @@ public class RabbitAckMonitorConfig implements ChannelAwareMessageListener {
                 System.out.println("TestDirectQueue消息成功消费到  messageId:"+messageId+"  messageData:"+messageData+"  createTime:"+createTime);
                 System.out.println("TestDirectQueue执行TestDirectQueue中的消息的业务处理流程......");
                 try {
-                    String ss = null;
-                    ss.toString();
+                    String s = msgArray[100];
+                    System.out.println(s);
                 }catch (Exception e){
                     System.out.println("TestDirectQueue执行异常......");
                     e.fillInStackTrace();
@@ -66,7 +66,7 @@ public class RabbitAckMonitorConfig implements ChannelAwareMessageListener {
     private Map<String, String> mapStringToMap(String str) {
         str = str.substring(1, str.length() - 1);
         String[] strs = str.split(",");
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         for (String string : strs) {
             String key = string.split("=")[0].trim();
             String value = string.split("=")[1];

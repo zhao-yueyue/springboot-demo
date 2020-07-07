@@ -8,7 +8,6 @@
         <groupId>com.ml</groupId>
         <artifactId>springboot</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <!-- 当前 service【子】工程信息 -->

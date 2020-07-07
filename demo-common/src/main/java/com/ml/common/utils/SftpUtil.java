@@ -26,12 +26,11 @@ public class SftpUtil {
 
     /**
      * 连接服务器
-     * @param host
-     * @param port
-     * @param userName
-     * @param password
-     * @return
-     * @throws Exception
+     * @param host ip
+     * @param port 端口
+     * @param userName 用户
+     * @param password 密码
+     * @return FTPClient对象
      */
     public static ChannelSftp getConnect(String host, String port, String userName, String password) throws Exception {
         try {
@@ -63,10 +62,8 @@ public class SftpUtil {
      * @param save_path	下载保存路径
      * @param oldFileName	服务器上文件名
      * @param newFileName	保存后新文件名
-     * @throws Exception
      */
-    public static void download(String ftp_path, String save_path, String oldFileName, String newFileName)
-            throws Exception {
+    public static void download(String ftp_path, String save_path, String oldFileName, String newFileName) {
         FileOutputStream fos = null;
         try {
             ftpClient.cd(ftp_path);
@@ -74,8 +71,6 @@ public class SftpUtil {
 //            if (!file.exists()) {
 //                file.mkdirs();
 //            }
-//            String saveFile = save_path + newFileName;
-//            File file1 = new File(saveFile);
 
             File file = new File(save_path, newFileName);
             if (!file.getParentFile().exists()) {
@@ -98,15 +93,14 @@ public class SftpUtil {
                 close();
             }*/
             e.printStackTrace();
-            logger.error("下载文件异常............", e.getMessage());
-            throw new Exception("download file error............");
+            logger.error("download file error............");
         } finally {
             if (fos != null) {
                 try {
                     fos.close();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    throw new Exception("close stream error..........");
+                    logger.error("close stream error............");
                 }
             }
         }
@@ -117,9 +111,8 @@ public class SftpUtil {
      * @param upload_path 上传文件路径
      * @param ftp_path	服务器保存路径
      * @param newFileName	新文件名
-     * @throws Exception
      */
-    public static void uploadFile(String upload_path, String ftp_path, String newFileName) throws Exception {
+    public static void uploadFile(String upload_path, String ftp_path, String newFileName) {
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(new File(upload_path));
@@ -127,14 +120,14 @@ public class SftpUtil {
             ftpClient.put(fis, newFileName);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new Exception("Upload file error.");
+            logger.debug("Upload file error............");
         } finally {
             if (fis != null) {
                 try {
                     fis.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    throw new Exception("close stream error.");
+                    logger.debug("close stream error............");
                 }
             }
         }
@@ -142,8 +135,6 @@ public class SftpUtil {
 
     /**
      * 关闭
-     *
-     * @throws Exception
      */
     public static void close() throws Exception {
         logger.debug("close............");
@@ -151,7 +142,6 @@ public class SftpUtil {
             ftpClient.disconnect();
             sshSession.disconnect();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             throw new Exception("close stream error.");
         }
@@ -161,10 +151,13 @@ public class SftpUtil {
         try {
 //            getConnect("180.76.176.197", "22", "root", "JY^Court)1025%");
 //            download("/home/testuser/test/ceshi2/","C:/Users/Downloads/log/","38357_mediate_1591695318973.xml","38357_mediate_202006181529.xml");
-            getConnect("180.76.184.90", "22", "root", "Ebeatcourt@2018");
+
+            ChannelSftp sftp = getConnect("180.76.184.90", "22", "root", "Ebeatcourt@2018");
+            System.out.println(sftp);
             download("/data/law_project/pics/2020/2020-07-01/applicant/","C:/Users/Administrator/Downloads/log/","2020_1593567738106_applicant_7022.jpg","2020_1593567738106_applicant_7022.jpg");
+
+            uploadFile("C:/Users/Administrator/Downloads/log/","/data/law_project/pics/2020/2020-07-01/applicant/","2020_1593567738106_applicant_7022.jpg");
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } finally {
             close();
